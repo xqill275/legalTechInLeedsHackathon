@@ -23,3 +23,7 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login')
 });
+
+app.get('/dashBoard', (req, res) => {
+    res.render('dashboard');
+});

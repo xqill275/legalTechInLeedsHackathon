@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f4f4f4;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #333;
+            color: white;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 15px;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .sidebar a:hover {
+            background: #575757;
+        }
+        
+        /* Main content */
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+            width: calc(100% - 260px);
+        }
+        
+        h2 {
+            color: #333;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        
+        .form-container input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .template-text {
+            font-size: 16px;
+            line-height: 1.5;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #218838;
+        }
+        
+        /* Hide the form initially */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="sidebar">
+        <a id="businessLink">Business</a>
+        <a id="peopleLink">People</a>
+    </div>
+    
+    <div class="content">
+        <div id="formContainer" class="hidden">
+            <h2>Remove data template email</h2>
+            <div class="template-text">
+                <p>
+                    Lorem ipsum <input type="text" id="input1" placeholder="Enter first text" /> amet, consectetuer adipiscing elit. 
+                    Magna per id at orci class ligula. Ligula sapien lacus sagittis diam amet aenean elementum urna. 
+                    Posuere parturient sed ex class posuere cubilia mi etiam per. Maximus tincidunt pharetra eu 
+                    <input type="text" id="input2" placeholder="Enter second text" /> s vestibulum ullamcorper 
+                    <input type="text" id="input3" placeholder="Enter third text" />. 
+                    Porttitor maecenas cubilia faucibus aptent interdum placerat condimentum.
+                </p>
+            </div>
+            <button onclick="generatePDF()">Download PDF</button>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('businessLink').addEventListener('click', function () {
+            document.getElementById('formContainer').classList.add('hidden');
+        });
+
+        document.getElementById('peopleLink').addEventListener('click', function () {
+            document.getElementById('formContainer').classList.remove('hidden');
+        });
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            if (!jsPDF) {
+                console.error("jsPDF is not loaded properly.");
+                return;
+            }
+            
+            const input1 = document.getElementById('input1').value;
+            const input2 = document.getElementById('input2').value;
+            const input3 = document.getElementById('input3').value;
+            
+            const doc = new jsPDF();
+            
+            const templateText = [
+                `Lorem ipsum ${input1} amet, consectetuer adipiscing elit.`,
+                "",
+                "Magna per id at orci class ligula.",
+                "",
+                "Ligula sapien lacus sagittis diam amet aenean elementum urna.",
+                "",
+                `Posuere parturient sed ex class posuere cubilia mi etiam per.`,
+                "",
+                `Maximus tincidunt pharetra eu ${input2} s vestibulum ullamcorper.`,
+                "",
+                "Porttitor maecenas cubilia faucibus aptent interdum placerat condimentum."
+            ];
+            
+            let y = 10;
+            
+            templateText.forEach(line => {
+                doc.text(line, 10, y);
+                y += 10;
+            });
+            
+            doc.save('filled_template.pdf');
+        }
+    </script>
+    
+</body>
+</html>
